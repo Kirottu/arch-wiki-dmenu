@@ -1,0 +1,10 @@
+#!/bin/bash
+
+WIKI_PATH=/usr/share/doc/arch-wiki/html/en
+
+WIKI_SEARCH=$(du -a $WIKI_PATH | cut -f2 | cut -d/ -f8 | sed 's/.html//g' | dmenu -i)
+WIKI="$WIKI_PATH/$WIKI_SEARCH.html"
+
+if [ -n "$WIKI_SEARCH" ]; then
+	surf $WIKI
+fi
