@@ -1,10 +1,17 @@
 #!/bin/bash
 
+dmenu=dmenu
+wayland=`loginctl show-session $(awk '/tty/ {print $1}' <(loginctl)) -p Type | awk -F= '{print $2}'`
+[[ $wayland = wayland ]] && dmenu="fuzzel -d"
+
+opener=xdg-open
+type $opener >/dev/null || opener=surf
+
 WIKI_PATH=/usr/share/doc/arch-wiki/html/en
 
-WIKI_SEARCH=$(du -a $WIKI_PATH | cut -f2 | cut -d/ -f8 | sed 's/.html//g' | dmenu -i)
+WIKI_SEARCH=$(du -a $WIKI_PATH | cut -f2 | cut -d/ -f8 | sed 's/.html//g' | $dmenu -i)
 WIKI="$WIKI_PATH/$WIKI_SEARCH.html"
 
 if [ -n "$WIKI_SEARCH" ]; then
-	surf $WIKI
+        $opener $WIKI
 fi
